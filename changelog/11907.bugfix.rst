@@ -1,0 +1,1 @@
+Fixed a regression where control-flow exceptions like ``pytest.skip``, ``pytest.fail``, ``pytest.xfail``, and ``pytest.exit``, as well as system-level exceptions like ``KeyboardInterrupt``, were being suppressed when raised inside a ``pytest.warns()`` block. 

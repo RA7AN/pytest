@@ -21,6 +21,7 @@ import warnings
 from _pytest.deprecated import check_ispytest
 from _pytest.deprecated import WARNS_NONE_ARG
 from _pytest.fixtures import fixture
+from _pytest.outcomes import Exit
 from _pytest.outcomes import fail
 
 
@@ -304,6 +305,12 @@ class WarningsChecker(WarningsRecorder):
         exc_val: Optional[BaseException],
         exc_tb: Optional[TracebackType],
     ) -> None:
+        # Let control-flow exceptions and system-level exceptions propagate
+        if exc_type is not None and (
+            not issubclass(exc_type, Exception) or issubclass(exc_type, Exit)
+        ):
+            return False
+
         super().__exit__(exc_type, exc_val, exc_tb)
 
         __tracebackhide__ = True
